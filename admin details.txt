@@ -1,0 +1,11 @@
+admin details: username:jame@gmail.com
+		password:james
+
+staff login details
+username:bridget@gmail.com
+password: james
+
+Head of Department details
+
+username: gideon@gmail.com
+password: james
