@@ -61,7 +61,7 @@
                     <tbody>
                     <?php
                     $status = 1;
-                    $sql = "SELECT tblleaves.id as lid,tblemployees.*,tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where tblleaves.".$roleData['status']."=:status and tblleaves.IsRead='".$roleData['isRead']."' and Department = '{$session_depart}' order by lid desc limit 15";
+                    $sql = "SELECT tblleaves.id as lid,tblemployees.*,tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where tblleaves.".$roleData['status']."=:status and tblleaves.IsRead='".$roleData['isRead']."' order by lid desc limit 15";
                     $query = $dbh -> prepare($sql);
                     $query->bindParam(':status',$status,PDO::PARAM_STR);
                     $query->execute();
