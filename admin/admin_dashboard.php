@@ -31,7 +31,7 @@
 					</div>
 					<div class="col-md-8">
 
-						<?php $query= mysqli_query($conn,"select * from tblemployees where emp_id = '$session_id'")or die(mysqli_error());
+						<?php $query= mysqli_query($conn,"select * from tblemployees where emp_id = '{$session_id}'");
 								$row = mysqli_fetch_array($query);
 						?>
 
@@ -73,9 +73,8 @@
 
 						<?php
 						$status=1;
-						$sql = "SELECT id from tblleaves where status=:status";
+                        $sql = "SELECT id from tblleaves where ".$roleData['status']."='1' AND IsRead='".$roleData['isRead']."'";
 						$query = $dbh -> prepare($sql);
-						$query->bindParam(':status',$status,PDO::PARAM_STR);
 						$query->execute();
 						$results=$query->fetchAll(PDO::FETCH_OBJ);
 						$leavecount=$query->rowCount();
@@ -97,9 +96,8 @@
 
 						<?php
 						$status=0;
-						$sql = "SELECT id from tblleaves where status=:status";
+						$sql = "SELECT id from tblleaves where ".$roleData['status']."='1' AND IsRead='".$roleData['isRead']."'";
 						$query = $dbh -> prepare($sql);
-						$query->bindParam(':status',$status,PDO::PARAM_STR);
 						$query->execute();
 						$results=$query->fetchAll(PDO::FETCH_OBJ);
 						$leavecount=$query->rowCount();
@@ -121,9 +119,8 @@
 
 						<?php
 						$status=2;
-						$sql = "SELECT id from tblleaves where status=:status";
+						$sql = "SELECT id from tblleaves where ".$roleData['status']."='1' AND IsRead='".$roleData['isRead']."'";
 						$query = $dbh -> prepare($sql);
-						$query->bindParam(':status',$status,PDO::PARAM_STR);
 						$query->execute();
 						$results=$query->fetchAll(PDO::FETCH_OBJ);
 						$leavecount=$query->rowCount();
@@ -154,7 +151,7 @@
 						<div class="user-list">
 							<ul>
 								<?php
-		                         $query = mysqli_query($conn,"select * from tblemployees where role='HOD' ORDER BY tblemployees.emp_id desc limit 4") or die(mysqli_error());
+		                         $query = mysqli_query($conn,"select * from tblemployees where role='HOD' ORDER BY tblemployees.emp_id desc limit 4");
 		                         while ($row = mysqli_fetch_array($query)) {
 		                         $id = $row['emp_id'];
 		                             ?>
@@ -201,7 +198,7 @@
 						<div class="user-list">
 							<ul>
 								<?php
-		                         $query = mysqli_query($conn,"select * from tblemployees where role = 'Staff' ORDER BY tblemployees.emp_id desc limit 4") or die(mysqli_error());
+		                         $query = mysqli_query($conn,"select * from tblemployees where role = 'Staff' ORDER BY tblemployees.emp_id desc limit 5");
 		                         while ($row = mysqli_fetch_array($query)) {
 		                         $id = $row['emp_id'];
 		                             ?>
@@ -231,75 +228,84 @@
 						<h2 class="text-blue h4">LATEST LEAVE APPLICATIONS</h2>
 					</div>
 				<div class="pb-20">
-					<table class="data-table table stripe hover nowrap">
-						<thead>
-							<tr>
-								<th class="table-plus datatable-nosort">STAFF NAME</th>
-								<th>LEAVE TYPE</th>
-								<th>APPLIED DATE</th>
-								<th>HOD STATUS</th>
-								<th>REG. STATUS</th>
-								<th class="datatable-nosort">ACTION</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
+                    <table class="data-table table stripe hover nowrap">
+                        <thead>
+                        <tr>
+                            <th class="table-plus datatable-nosort">STAFF NAME</th>
+                            <th>LEAVE TYPE</th>
+                            <th>APPLIED DATE</th>
+                            <th>HOD</th>
+                            <th>Principal</th>
+                            <th>DVC</th>
+                            <th class="datatable-nosort">ACTION</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <?php $sql = "SELECT tblleaves.id as lid,tblemployees.*, tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where tblleaves.".$roleData['status']."='1' and tblleaves.IsRead='".$roleData['isRead']."' and Department = '{$session_depart}' order by lid desc limit 15";
+                            $query = $dbh -> prepare($sql);
+                            $query->execute();
+                            $results=$query->fetchAll(PDO::FETCH_OBJ);
+                            $cnt=1;
+                            if($query->rowCount() > 0)
+                            {
+                            foreach($results as $result)
+                            {
+                            ?>
 
-								<?php 
-								$status=1;
-								$sql = "SELECT tblleaves.id as lid,tblemployees.FirstName,tblemployees.LastName,tblemployees.location,tblemployees.emp_id,tblleaves.LeaveType,tblleaves.PostingDate,tblleaves.Status, tblleaves.admin_status from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where tblleaves.Status= '$status' order by lid desc limit 5";
-									$query = mysqli_query($conn, $sql) or die(mysqli_error());
-									while ($row = mysqli_fetch_array($query)) {
-									  $cnt=1;
-								 ?>  
-
-								<td class="table-plus">
-									<div class="name-avatar d-flex align-items-center">
-										<div class="txt mr-2 flex-shrink-0">
-											<b><?php echo htmlentities($cnt);?></b>
-										</div>
-										<div class="txt">
-											<div class="weight-600"><?php echo $row['FirstName']." ".$row['LastName'];?></div>
-										</div>
-									</div>
-								</td>
-								<td><?php echo $row['LeaveType']; ?></td>
-	                            <td><?php echo $row['PostingDate']; ?></td>
-								<td><?php $stats=$row['Status'];
-	                             if($stats==1){
-	                              ?>
-	                                  <span style="color: green">Approved</span>
-	                                  <?php } if($stats==2)  { ?>
-	                                 <span style="color: red">Rejected</span>
-	                                  <?php } if($stats==0)  { ?>
-	                             <span style="color: blue">Pending</span>
-	                             <?php } ?>
-	                            </td>
-	                            <td><?php $stats=$row['admin_status'];
-	                             if($stats==1){
-	                              ?>
-	                                  <span style="color: green">Approved</span>
-	                                  <?php } if($stats==2)  { ?>
-	                                 <span style="color: red">Rejected</span>
-	                                  <?php } if($stats==0)  { ?>
-	                             <span style="color: blue">Pending</span>
-	                             <?php } ?>
-	                            </td>
-								<td>
-									<div class="dropdown">
-										<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-											<i class="dw dw-more"></i>
-										</a>
-										<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-											<a class="dropdown-item" href="leave_details.php?leaveid=<?php echo $row['lid']; ?>"><i class="dw dw-eye"></i> View</a>
-											<a class="dropdown-item" href="admin_dashboard.php?leaveid=<?php echo $row['lid']; ?>"><i class="dw dw-delete-3"></i> Delete</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<?php $cnt++; }?>
-						</tbody>
-					</table>
+                            <td class="table-plus">
+                                <div class="name-avatar d-flex align-items-center">
+                                    <div class="txt mr-2 flex-shrink-0">
+                                        <b><?php echo htmlentities($cnt);?></b>
+                                    </div>
+                                    <div class="txt">
+                                        <div class="weight-600"><?php echo htmlentities($result->FirstName." ".$result->LastName);?></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><?php echo htmlentities($result->LeaveType);?></td>
+                            <td><?php echo htmlentities($result->PostingDate);?></td>
+                            <td><?php
+                                if($result->hod_status == 0):
+                                    echo ' <small class="badge text-secondary" >Pending</small>';
+                                elseif ($result->hod_status == 1):
+                                    echo ' <small class="badge text-success" >Approved</small>';
+                                elseif ($result->hod_status == 2):
+                                    echo ' <small class="badge text-danger" >Rejected</small>';
+                                endif; ?>
+                            </td>
+                            <td><?php
+                                if($result->principal_status == 0):
+                                    echo ' <small class="badge text-secondary" >Pending</small>';
+                                elseif ($result->principal_status == 1):
+                                    echo ' <small class="badge text-success" >Approved</small>';
+                                elseif ($result->principal_status == 2):
+                                    echo ' <small class="badge text-danger" >Rejected</small>';
+                                endif; ?>
+                            </td>
+                            <td><?php
+                                if($result->dvc_status == 0):
+                                    echo ' <small class="badge text-secondary" >Pending</small>';
+                                elseif ($result->dvc_status == 1):
+                                    echo ' <small class="badge text-success" >Approved</small>';
+                                elseif ($result->dvc_status == 2):
+                                    echo ' <small class="badge text-danger" >Rejected</small>';
+                                endif; ?>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                                        <i class="dw dw-more"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                        <a class="dropdown-item" href="leave_details.php?leaveid=<?php echo htmlentities($result->lid);?>"><i class="dw dw-eye"></i> View</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php $cnt++;} }?>
+                        </tbody>
+                    </table>
 			   </div>
 			</div>
 

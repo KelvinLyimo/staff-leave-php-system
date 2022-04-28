@@ -24,7 +24,9 @@
 						<span class="user-icon">
 							<img src="<?php echo (!empty($row['location'])) ? '../uploads/'.$row['location'] : '../uploads/NO-IMAGE-AVAILABLE.jpg'; ?>" alt="">
 						</span>
-						<span class="user-name"><?php echo $row['FirstName']. " " .$row['LastName']; ?></span>
+                        <span class="user-name text-center"><?php echo $row['FirstName']. " " .$row['LastName']; ?><br>
+                            <small class="text-muted"><?= $roleData['role'] ?></small>
+                        </span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
 						<a class="dropdown-item" href="my_profile.php"><i class="dw dw-user1"></i> Profile</a>

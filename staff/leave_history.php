@@ -117,9 +117,13 @@ if (isset($_GET['delete'])) {
 
 			<div class="card-box mb-30">
 				<div class="pd-20">
-						<h2 class="text-blue h4">ALL MY LEAVE</h2>
-					</div>
+                    <h2 class="text-blue h4">ALL MY LEAVE</h2>
+                </div>
                 <div class="pb-20 table-responsive">
+                    <div class="col-md-12">
+                        <?php include_once("../includes/message.php"); ?>
+                    </div>
+
                     <table class="data-table table stripe hover nowrap">
                         <thead>
                         <tr>

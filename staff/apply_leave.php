@@ -3,33 +3,51 @@
 @include('../includes/session.php');
 
 
+function isDate($dateString){
+    return (bool)strtotime($dateString);
+}
+
+
 $emp_id = $_SESSION['alogin'];
 $session_depart = $_SESSION['arole'];
 
- $sql = "SELECT  *  from tblleaves where tblleaves.empid='{$emp_id}'  ";
+ $leave_days = $_SESSION['leaveDay'];
+ $sql = "SELECT  *  from tblleaves where tblleaves.empid='{$emp_id}' and dvc_status='1'  ";
  $query = $dbh -> prepare($sql);
  $query->execute();
  $results=$query->fetchAll(PDO::FETCH_OBJ);
- $signedLeaveDay =0;
+ $signedLeaveDay = $leave_days;
  foreach($results as $result):
-	 echo  date('Y', strtotime($result->ToDate)) ."===".  date('Y')."<br>";
 	 if( date('Y', strtotime($result->ToDate)) === date('Y') )
-		 $signedLeaveDay += $result->num_days ;
+		 $signedLeaveDay -= $result->num_days ;
  endforeach;
- if($signedLeaveDay >= LEAVE_DAYS):
+ if($signedLeaveDay < 0):
 	$signedLeaveDay = 0;
+    $_SESSION['warning']="Sorry you have reach maximum leave application request";
  endif;
 
 
 	if(isset($_POST['apply'])){
         $leave_type=$_POST['leave_type'];
-        $fromdate=date('d-m-Y', strtotime($_POST['date_from']));
-        $todate=date('d-m-Y', strtotime($_POST['date_to']));
+
+
+
+        if(!date_create($_POST['date_from']) and !date_create($_POST['date_to'])){
+            $_SESSION['failed']="Please insert correct date format";
+           header("Refresh:0");
+           exit();
+        }
+
+
+
+
+        $fromdate=date('Y-m-d', strtotime($_POST['date_from']));
+        $todate=date('Y-m-d', strtotime($_POST['date_to']));
         $description=$_POST['description'];
-        $leave_days=$_POST['leave_days'];
+       $leave_days=$_POST['$leave_days'];
         $datePosting = date("Y-m-d");
 
-        if( strtotime($_POST['date_from'])  > strtotime($_POST['date_to'])){
+        if(strtotime($_POST['date_from'])  > strtotime($_POST['date_to'])){
             $_SESSION['failed']="End Date should be greater than Start Date";
         }elseif($leave_days <= 0){
             $_SESSION['failed']="You have Exceeded Your Leave Limit";
@@ -39,22 +57,39 @@ $session_depart = $_SESSION['arole'];
 
             $diff =  date_diff($DF , $DT );
             $num_days = (1 + $diff->format("%a"));
+            if($num_days > $signedLeaveDay){
+                $_SESSION['failed']="Sorry you can't request more than ".$signedLeaveDay." Days";
+                header("Refresh:0");
+                exit();
+            }
 
-            $sql="INSERT INTO tblleaves(LeaveType,ToDate,FromDate,Description,Status,IsRead,empid,num_days,PostingDate) VALUES(:leave_type,:fromdate,:todate,:description,:status,:isread,:empid,:num_days,:datePosting)";
+            $nullData = '';
+            $isRead = 0;
+
+            $sql="INSERT INTO tblleaves(LeaveType, ToDate, FromDate, Description, PostingDate, hod_remark, principal_remark, principal_action_date, hod_action_date, dvc_action_date, hod_status, principal_status, IsRead, empid, num_days, dvc_status, dvc_remark) VALUES(:LeaveType, :ToDate, :FromDate, :Description, :PostingDate, :hod_remark, :principal_remark, :principal_action_date, :hod_action_date, :dvc_action_date, :hod_status, :principal_status, :IsRead, :empid, :num_days, :dvc_status, :dvc_remark)";
             $query = $dbh->prepare($sql);
-            $query->bindParam(':leave_type',$leave_type,PDO::PARAM_STR);
-            $query->bindParam(':fromdate',$fromdate,PDO::PARAM_STR);
-            $query->bindParam(':todate',$todate,PDO::PARAM_STR);
-            $query->bindParam(':description',$description,PDO::PARAM_STR);
-            $query->bindParam(':status',$status,PDO::PARAM_STR);
-            $query->bindParam(':isread',$isread,PDO::PARAM_STR);
-            $query->bindParam(':empid',$empid,PDO::PARAM_STR);
+            $query->bindParam(':LeaveType',$leave_type,PDO::PARAM_STR);
+            $query->bindParam(':FromDate',$fromdate,PDO::PARAM_STR);
+            $query->bindParam(':ToDate',$todate,PDO::PARAM_STR);
+            $query->bindParam(':Description',$description,PDO::PARAM_STR);
             $query->bindParam(':num_days',$num_days,PDO::PARAM_STR);
-            $query->bindParam(':datePosting',$datePosting,PDO::PARAM_STR);
+            $query->bindParam(':PostingDate',$datePosting,PDO::PARAM_STR);
+            $query->bindParam(':hod_remark',$nullData,PDO::PARAM_STR);
+            $query->bindParam(':principal_remark',$nullData,PDO::PARAM_STR);
+            $query->bindParam(':dvc_remark',$nullData,PDO::PARAM_STR);
+            $query->bindParam(':principal_action_date',$nullData,PDO::PARAM_STR);
+            $query->bindParam(':hod_action_date',$nullData,PDO::PARAM_STR);
+            $query->bindParam(':dvc_action_date',$nullData,PDO::PARAM_STR);
+            $query->bindParam(':hod_status',$nullData,PDO::PARAM_STR);
+            $query->bindParam(':principal_status',$nullData,PDO::PARAM_STR);
+            $query->bindParam(':IsRead',$isRead,PDO::PARAM_STR);
+            $query->bindParam(':empid',$emp_id,PDO::PARAM_STR);
+            $query->bindParam(':dvc_status',$nullData,PDO::PARAM_STR);
             $query->execute();
             $lastInsertId = $dbh->lastInsertId();
+
 		if($lastInsertId){
-            $_SESSION['successful']="Leave Application was successful";
+            $_SESSION['success']="Leave Application was successful";
 			header('location: leave_history.php');
 		}
 		else {
@@ -93,7 +128,7 @@ $session_depart = $_SESSION['arole'];
 
 	<div class="main-container">
 		<div class="pb-20">
-			<div class="min-height-200px">
+			<div style="min-height: 90vh">
 				<div class="page-header">
 					<div class="row">
 						<div class="col-md-6 col-sm-12">
@@ -118,18 +153,21 @@ $session_depart = $_SESSION['arole'];
 						</div>
 					</div>
 					<div class="wizard-content">
-						<form method="post" action="">
+                        <div class="col-md-12">
+                            <?php include_once("../includes/message.php"); ?>
+                        </div>
+
+                        <?php if($signedLeaveDay > 0): ?>
+
+						    <form method="post" action="">
 							<section>
 
 								<?php if ($role_id = 'Staff'): ?>
 								<?php $query= mysqli_query($conn,"select * from tblemployees where emp_id = '$session_id'")or die(mysqli_error());
 									$row = mysqli_fetch_array($query);
 								?>
-						
+
 								<div class="row">
-
-                                    <?php include_once("../includes/message.php"); ?>
-
 									<div class="col-md-6 col-sm-12">
 										<div class="form-group">
 											<label >First Name </label>
@@ -153,7 +191,7 @@ $session_depart = $_SESSION['arole'];
 									<div class="col-md-6 col-sm-12">
 										<div class="form-group">
 											<label>Available Leave Days </label>
-											<input name="leave_days" type="text" class="form-control" required="true" autocomplete="off" readonly value="<?= $signedLeaveDay  ?>">
+											<input name="$leave_days" type="text" class="form-control" required="true" autocomplete="off" readonly value="<?= $signedLeaveDay  ?>">
 										</div>
 									</div>
 									<?php endif ?>
@@ -211,6 +249,8 @@ $session_depart = $_SESSION['arole'];
 								</div>
 							</section>
 						</form>
+
+                        <?php endif; ?>
 					</div>
 				</div>
 

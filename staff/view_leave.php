@@ -235,7 +235,7 @@
                                                                        <?php if($result->dvc_status != 0){ echo date('d M, Y H:ia', strtotime($result->dvc_action_date)); } else{ echo '--'; } ?>
                                                                    </small>
                                                                </td>
-                                                               <td><small class="text-justify"> <?php if($result->dvc_status != 0){ echo date('d J, Y', strtotime($result->dvc_remark)); } ?></small></td>
+                                                               <td><small class="text-justify"> <?php if($result->dvc_status != 0){ echo $result->dvc_remark; } ?></small></td>
                                                            </tr>
 
 

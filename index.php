@@ -1,8 +1,8 @@
 <?php
 @session_start();
 include('includes/config.php');
-if (!isset($_SESSION['alogin'])){
-    header("location: index.php");
+if (isset($_SESSION['alogin'])){
+    header("location:".$_SESSION['path']);
 }
 
 ?>
@@ -61,7 +61,7 @@ if (!isset($_SESSION['alogin'])){
 						<div class="login-title">
 							<h2 class="text-center text-primary">Welcome To LeavePortal</h2>
 						</div>
-						<form name="signin" method="post" action="process/login.php">
+						<form name="signin" method="post" action="login.php">
 						    <?php require_once('includes/message.php'); ?>
 							<div class="input-group custom">
 								<input type="text" class="form-control form-control-lg" placeholder="Email address" name="username" id="username">

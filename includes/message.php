@@ -23,7 +23,7 @@ if(isset($_SESSION['failed'])){
 
 if(isset($_SESSION['warning'])){
     echo ' <div class="alert alert-warning alert-dismissible fade show" role="alert">
-              <strong>Warning! </strong> '.$_SESSION['warning'].'
+              <strong>Attention! </strong> '.$_SESSION['warning'].'
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
