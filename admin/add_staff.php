@@ -177,9 +177,10 @@
 											<label>User Role :</label>
 											<select name="user_role" class="custom-select form-control" required="true" autocomplete="off">
 												<option value="">Select Role</option>
-												<option value="Admin">Admin</option>
-												<option value="HOD">HOD</option>
 												<option value="Staff">Staff</option>
+                                                <option value="HOD">HOD</option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="HOD">DVC</option>
 											</select>
 										</div>
 									</div>
