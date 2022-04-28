@@ -1,45 +1,10 @@
 <?php
-session_start();
+@session_start();
 include('includes/config.php');
-if(isset($_POST['signin']))
-{
-	$username=$_POST['username'];
-	$password=md5($_POST['password']);
-
-	$sql ="SELECT * FROM tblemployees where EmailId ='$username' AND Password ='$password'";
-	$query= mysqli_query($conn, $sql);
-	$count = mysqli_num_rows($query);
-	if($count > 0)
-	{
-		while ($row = mysqli_fetch_assoc($query)) {
-		    if ($row['role'] == 'Admin') {
-		    	$_SESSION['alogin']=$row['emp_id'];
-		    	$_SESSION['arole']=$row['Department'];
-			 	echo "<script type='text/javascript'> document.location = 'admin/admin_dashboard.php'; </script>";
-		    }
-		    elseif ($row['role'] == 'Staff') {
-		    	$_SESSION['alogin']=$row['emp_id'];
-		    	$_SESSION['arole']=$row['Department'];
-			 	echo "<script type='text/javascript'> document.location = 'staff/index.php'; </script>";
-		    }
-		    else {
-		    	$_SESSION['alogin']=$row['emp_id'];
-		    	$_SESSION['arole']=$row['Department'];
-			 	echo "<script type='text/javascript'> document.location = 'heads/index.php'; </script>";
-		    }
-		}
-
-	} 
-	else{
-	  
-	  echo "<script>alert('Invalid Details');</script>";
-
-	}
-
+if (!isset($_SESSION['alogin'])){
+    header("location: index.php");
 }
-// $_SESSION['alogin']=$_POST['username'];
-// 	echo "<script type='text/javascript'> document.location = 'changepassword.php'; </script>";
-// hello world my name is kelvin denis lyimo and i am the best programmer and  a forex trader   in the world
+
 ?>
 
 
@@ -96,8 +61,8 @@ if(isset($_POST['signin']))
 						<div class="login-title">
 							<h2 class="text-center text-primary">Welcome To LeavePortal</h2>
 						</div>
-						<form name="signin" method="post">
-						
+						<form name="signin" method="post" action="process/login.php">
+						    <?php require_once('includes/message.php'); ?>
 							<div class="input-group custom">
 								<input type="text" class="form-control form-control-lg" placeholder="Email address" name="username" id="username">
 								<div class="input-group-append custom">

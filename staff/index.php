@@ -66,7 +66,7 @@
 											<img src="<?php echo (!empty($row['location'])) ? '../uploads/'.$row['location'] : '../uploads/NO-IMAGE-AVAILABLE.jpg'; ?>" class="border-radius-100 box-shadow" width="50" height="50" alt="">
 										</div>
 										<div class="txt">
-											<span class="badge badge-pill badge-sm" data-bgcolor="#e7ebf5" data-color="#265ed7"><?php echo $row['Department']; ?></span>
+											<span class=badge text-pill text-sm" data-bgcolor="#e7ebf5" data-color="#265ed7"><?php echo $row['Department']; ?></span>
 											<div class="font-14 weight-600"><?php echo $row['FirstName'] . " " . $row['LastName']; ?></div>
 											<div class="font-12 weight-500" data-color="#b2b1b6"><?php echo $row['EmailId']; ?></div>
 										</div>
@@ -113,7 +113,7 @@
 											<img src="<?php echo $row['location']; ?>" class="border-radius-100 box-shadow" width="50" height="50" alt="">
 										</div>
 										<div class="txt">
-											<span class="badge badge-pill badge-sm" data-bgcolor="#e7ebf5" data-color="#265ed7"><?php echo $row['Department']; ?></span>
+											<span class=badge text-pill text-sm" data-bgcolor="#e7ebf5" data-color="#265ed7"><?php echo $row['Department']; ?></span>
 											<div class="font-14 weight-600"><?php echo $row['FirstName'] . " " . $row['LastName']; ?></div>
 											<div class="font-12 weight-500" data-color="#b2b1b6"><?php echo $row['EmailId']; ?></div>
 										</div>
@@ -131,7 +131,7 @@
 				<div class="pd-20">
 					<h2 class="text-blue h4">LEAVE HISTORY</h2>
 				</div>
-				<div class="pb-20">
+				<div class="pb-20 table-responsive">
 					<table class="data-table table stripe hover nowrap">
 						<thead>
 							<tr>
@@ -139,58 +139,62 @@
 								<th>DATE FROM</th>
 								<th>DATE TO</th>
 								<th>NO. OF DAYS</th>
-								<th>HOD STATUS</th>
-								<th>REG. STATUS</th>
-								<th class="datatable-nosort">ACTION</th>
+								<th>HOD</th>
+								<th>Principal</th>
+                                <th>DVC</th>
+								<th class="datatable-nosort"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								
 								 <?php 
                                     $sql = "SELECT * from tblleaves where empid = '$session_id'";
                                     $query = $dbh -> prepare($sql);
                                     $query->execute();
                                     $results=$query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt=1;
-                                    if($query->rowCount() > 0)
-                                    {
-                                    foreach($results as $result)
-                                    {               ?>  
-
-								  <td><?php echo htmlentities($result->LeaveType);?></td>
-                                  <td><?php echo htmlentities($result->FromDate);?></td>
-                                  <td><?php echo htmlentities($result->ToDate);?></td>
-                                  <td><?php echo htmlentities($result->num_days);?></td>
-                                  <td><?php $stats=$result->Status;
-                                       if($stats==1){
-                                        ?>
-                                           <span style="color: green">Approved</span>
-                                            <?php } if($stats==2)  { ?>
-                                           <span style="color: red">Not Approved</span>
-                                            <?php } if($stats==0)  { ?>
-	                                       <span style="color: blue">Pending</span>
-	                                       <?php } ?>
-
-                                    </td>
-                                    <td><?php $stats=$result->admin_status;
-                                       if($stats==1){
-                                        ?>
-                                           <span style="color: green">Approved</span>
-                                            <?php } if($stats==2)  { ?>
-                                           <span style="color: red">Not Approved</span>
-                                            <?php } if($stats==0)  { ?>
-	                                       <span style="color: blue">Pending</span>
-	                                       <?php } ?>
-
-                                    </td>
-								   <td>
-									  <div class="table-actions">
-										<a title="VIEW" href="view_leave.php?edit=<?php echo htmlentities($result->id);?>" data-color="#265ed7"><i class="icon-copy dw dw-eye"></i></a>
-									  </div>
-								   </td>
-							</tr>
-							<?php $cnt++;} }?>  
+                                    if($query->rowCount() > 0):
+                                        foreach($results as $result):
+                                            echo '<tr>';
+                                                echo '<td>'.htmlentities($result->LeaveType).'</td>';
+                                                echo '<td>'.htmlentities($result->FromDate).'</td>';
+                                                echo '<td>'.htmlentities($result->ToDate).'</td>';
+                                                echo '<td>'.htmlentities($result->num_days).'</td>';
+                                                echo '<td>';
+                                                     if($result->hod_status == 0):
+                                                         echo ' <small class="badge text-secondary" >Pending</small>';
+                                                     elseif ($result->hod_status == 1):
+                                                         echo ' <small class="badge text-success" >Approved</small>';
+                                                     elseif ($result->hod_status == 2):
+                                                         echo ' <small class="badge text-danger" >Rejected</small>';
+                                                     endif;
+                                                echo '</td>';
+                                                echo '<td>';
+                                                    if($result->principal_status == 0):
+                                                        echo ' <small class="badge text-secondary" >Pending</small>';
+                                                    elseif ($result->principal_status == 1):
+                                                        echo ' <small class="badge text-success" >Approved</small>';
+                                                    elseif ($result->principal_status == 2):
+                                                        echo ' <small class="badge text-danger" >Rejected</small>';
+                                                    endif;
+                                                echo '</td>';
+                                                echo '<td>';
+                                                    if($result->dvc_status == 0):
+                                                        echo ' <small class="badge text-secondary" >Pending</small>';
+                                                    elseif ($result->dvc_status == 1):
+                                                        echo ' <small class="badge text-success" >Approved</small>';
+                                                    elseif ($result->dvc_status == 2):
+                                                        echo ' <small class="badge text-danger" >Rejected</small>';
+                                                    endif;
+                                                echo '</td>';
+                                                echo '<td> 
+                                                        <div class="table-actions">
+                                                            <a title="VIEW" href="view_leave.php?edit='.htmlentities($result->id).'" data-color="#265ed7"><i class="icon-copy dw dw-eye"></i></a>
+                                                         </div>
+                                                      </td>';
+                                            echo '</tr>';
+                                        endforeach;
+                                    endif;
+                                 ?>
 						</tbody>
 					</table>
 			   </div>

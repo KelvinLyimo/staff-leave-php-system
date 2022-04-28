@@ -1,10 +1,11 @@
     <?php
 
-    define('DB_HOST', 'localhost');
-    define('DB_USER','root');
-    define('DB_PASS', '');
-    define('DB_NAME', 'leave_staff');
-    define('LEAVE_DAYS', 28);
+    const DB_HOST = 'localhost';
+    const DB_USER = 'root';
+    const DB_PASS = '';
+    const DB_NAME = 'leave_staff';
+    const LEAVE_DAYS = 28;
+    define("BASE_PATH", $_SERVER['SERVER_NAME'].'/'.$_SERVER['REQUEST_URI']);
 
     $conn = mysqli_connect('localhost','root','','leave_staff') or die(mysqli_error());
 

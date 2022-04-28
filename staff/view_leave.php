@@ -80,163 +80,176 @@
 						</div>
 					</div>
 					<form method="post" action="">
-
 						<?php 
-						if(!isset($_GET['edit']) && empty($_GET['edit'])){
+						if(!isset($_GET['edit']) && empty($_GET['edit'])):
 							header('Location: index.php');
-						}
-						else {
-						
-						$lid=intval($_GET['edit']);
-						$sql = "SELECT tblleaves.id as lid,tblemployees.FirstName,tblemployees.LastName,tblemployees.emp_id,tblemployees.Gender,tblemployees.Phonenumber,tblemployees.EmailId,tblemployees.Av_leave,tblleaves.LeaveType,tblleaves.ToDate,tblleaves.FromDate,tblleaves.Description,tblleaves.PostingDate,tblleaves.Status,tblleaves.AdminRemark,tblleaves.admin_status,tblleaves.registra_remarks,tblleaves.AdminRemarkDate,tblleaves.num_days from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where tblleaves.id=:lid";
-						$query = $dbh -> prepare($sql);
-						$query->bindParam(':lid',$lid,PDO::PARAM_STR);
-						$query->execute();
-						$results=$query->fetchAll(PDO::FETCH_OBJ);
-						$cnt=1;
-						if($query->rowCount() > 0)
-						{
-						foreach($results as $result)
-						{         
-						?>  
+						else:
+                                $lid=intval($_GET['edit']);
+                                $sql = "SELECT tblleaves.id as lid,tblemployees.*,tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where tblleaves.id=:lid";
+                                $query = $dbh -> prepare($sql);
+                                $query->bindParam(':lid',$lid,PDO::PARAM_STR);
+                                $query->execute();
+                                $results=$query->fetchAll(PDO::FETCH_OBJ);
+                                $cnt=1;
+                                if($query->rowCount() > 0):
+                                    foreach($results as $result):
+                                        ?>
+                                            <div class="row">
+                                                <div class="col-md-4 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label style="font-size:16px;"><b>Full Name</b></label>
+                                                        <input type="text" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo htmlentities($result->FirstName." ".$result->LastName);?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label style="font-size:16px;"><b>Email Address</b></label>
+                                                        <input type="text" class="selectpicker form-control" data-style="btn-outline-info" readonly value="<?php echo htmlentities($result->EmailId);?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label style="font-size:16px;"><b>Gender</b></label>
+                                                        <input type="text" class="selectpicker form-control" data-style="btn-outline-success" readonly value="<?php echo htmlentities($result->Gender);?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label style="font-size:16px;"><b>Phone Number</b></label>
+                                                        <input type="text" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo htmlentities($result->Phonenumber);?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label style="font-size:16px;"><b>Leave Type</b></label>
+                                                        <input type="text" class="selectpicker form-control" data-style="btn-outline-info" readonly value="<?php echo htmlentities($result->LeaveType);?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label style="font-size:16px;"><b>Applied Date</b></label>
+                                                        <input type="text" class="selectpicker form-control" data-style="btn-outline-success" readonly value="<?php echo htmlentities($result->PostingDate);?>">
+                                                    </div>
+                                                </div>
 
-						<div class="row">
-							<div class="col-md-4 col-sm-12">
-								<div class="form-group">
-									<label style="font-size:16px;"><b>Full Name</b></label>
-									<input type="text" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo htmlentities($result->FirstName." ".$result->LastName);?>">
-								</div>
-							</div>
-							<div class="col-md-4 col-sm-12">
-								<div class="form-group">
-									<label style="font-size:16px;"><b>Email Address</b></label>
-									<input type="text" class="selectpicker form-control" data-style="btn-outline-info" readonly value="<?php echo htmlentities($result->EmailId);?>">
-								</div>
-							</div>
-							<div class="col-md-4 col-sm-12">
-								<div class="form-group">
-									<label style="font-size:16px;"><b>Gender</b></label>
-									<input type="text" class="selectpicker form-control" data-style="btn-outline-success" readonly value="<?php echo htmlentities($result->Gender);?>">
-								</div>
-							</div>
-							<div class="col-md-4 col-sm-12">
-								<div class="form-group">
-									<label style="font-size:16px;"><b>Phone Number</b></label>
-									<input type="text" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo htmlentities($result->Phonenumber);?>">
-								</div>
-							</div>
-							<div class="col-md-4 col-sm-12">
-								<div class="form-group">
-									<label style="font-size:16px;"><b>Leave Type</b></label>
-									<input type="text" class="selectpicker form-control" data-style="btn-outline-info" readonly value="<?php echo htmlentities($result->LeaveType);?>">
-								</div>
-							</div>
-							<div class="col-md-4 col-sm-12">
-								<div class="form-group">
-									<label style="font-size:16px;"><b>Applied Date</b></label>
-									<input type="text" class="selectpicker form-control" data-style="btn-outline-success" readonly value="<?php echo htmlentities($result->PostingDate);?>">
-								</div>
-							</div>
+                                                <div class="col-md-4 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label style="font-size:16px;"><b>Applied No. of Days</b></label>
+                                                        <input type="text" class="selectpicker form-control" data-style="btn-outline-info" readonly value="<?php echo htmlentities($result->num_days);?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label style="font-size:16px;"><b>Available No. of Days</b></label>
+                                                        <input type="text" class="form-control" data-style="btn-outline-info" readonly value="<?php echo htmlentities($result->Av_leave);?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label style="font-size:16px;"><b>Leave Period</b></label>
+                                                        <input type="text" class="selectpicker form-control" data-style="btn-outline-info" readonly value="From <?= date('d/m/Y', strtotime($result->FromDate)) ?> to <?= date('d/m/Y', strtotime($result->ToDate)) ?>">
+                                                    </div>
+                                                </div>
 
-							<div class="col-md-4 col-sm-12">
-								<div class="form-group">
-									<label style="font-size:16px;"><b>Applied No. of Days</b></label>
-									<input type="text" class="selectpicker form-control" data-style="btn-outline-info" readonly value="<?php echo htmlentities($result->num_days);?>">
-								</div>
-							</div>
-							<div class="col-md-4 col-sm-12">
-								<div class="form-group">
-									<label style="font-size:16px;"><b>Available No. of Days</b></label>
-									<input type="text" class="selectpicker form-control" data-style="btn-outline-info" readonly value="<?php echo htmlentities($result->Av_leave);?>">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label style="font-size:16px;"><b>Leave Period</b></label>
-									<input type="text" class="selectpicker form-control" data-style="btn-outline-info" readonly value="From <?php echo htmlentities($result->FromDate);?> to <?php echo htmlentities($result->ToDate);?>">
-								</div>
-							</div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="label"><b>Leave Reason</b></label>
+                                                    <div class="col-sm-12 col-md-12 bg-light-gray pt-2" style="min-height:100px; border-radius: 5px; ">
+                                                        <?php echo htmlentities($result->Description);?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-12 col-md-12 table-responsive">
+                                                   <table class="table table-bordered">
+                                                       <thead>
+                                                           <tr>
+                                                               <th>Administer</th>
+                                                               <th>Status</th>
+                                                               <th title="date of action">Date</th>
+                                                               <th>Remark</th>
+                                                           </tr>
+                                                       </thead>
+                                                       <tbody>
+                                                            <!--  HOD -->
+                                                           <tr>
+                                                               <td class="text-center">HOD<br><small class="text-default">(Head of Department)</small></td>
+                                                               <td>
+                                                                   <?php
+                                                                       if($result->hod_status == 0):
+                                                                           echo ' <small class="badge text-secondary" >Pending</small>';
+                                                                       elseif ($result->hod_status == 1):
+                                                                           echo ' <small class="badge text-success" >Approved</small>';
+                                                                       elseif ($result->hod_status == 2):
+                                                                           echo ' <small class="badge text-danger" >Rejected</small>';
+                                                                       endif;
+                                                                   ?>
+                                                               </td>
+                                                               <td class="text-muted text-center">
+                                                                   <small>
+                                                                       <?php if($result->hod_status != 0){ echo date('d M, Y H:ia', strtotime($result->hod_action_date)); } else{ echo '--'; } ?>
+                                                                   </small>
+                                                               </td>
+                                                               <td><small class="text-justify"> <?php if($result->hod_status != 0){ echo $result->hod_remark; } ?></small></td>
+                                                           </tr>
 
-						</div>
-						<div class="form-group row">
-								<label style="font-size:16px;" class="col-sm-12 col-md-2 col-form-label"><b>Leave Reason</b></label>
-								<div class="col-sm-12 col-md-10">
-									<textarea name=""class="form-control text_area" readonly type="text"><?php echo htmlentities($result->Description);?></textarea>
-								</div>
-						</div>
-						<div class="form-group row">
-								<label style="font-size:16px;" class="col-sm-12 col-md-2 col-form-label"><b>HOD Remarks</b></label>
-								<div class="col-sm-12 col-md-10">
-									<?php
-									if ($result->AdminRemark==""): ?>
-									  <input type="text" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo "Waiting for Approval"; ?>">
-									<?php else: ?>
-									  <input type="text" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo htmlentities($result->AdminRemark); ?>">
-									<?php endif ?>
-								</div>
-						</div>
-						<div class="form-group row">
-								<label style="font-size:16px;" class="col-sm-12 col-md-2 col-form-label"><b>Reg. Remarks</b></label>
-								<div class="col-sm-12 col-md-10">
-									<?php
-									if ($result->registra_remarks==""): ?>
-									  <input type="text" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo "Waiting for Approval"; ?>">
-									<?php else: ?>
-									  <input type="text" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo htmlentities($result->registra_remarks); ?>">
-									<?php endif ?>
-								</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-								   <label style="font-size:16px;"><b>Action Taken Date</b></label>
-								   <?php
-									if ($result->AdminRemarkDate==""): ?>
-									  <input type="text" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo "NA"; ?>">
-									<?php else: ?>
-									  <input type="text" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo htmlentities($result->AdminRemarkDate); ?>">
-									<?php endif ?>
+                                                            <!--  Principal -->
+                                                           <tr>
+                                                               <td class="text-center">Principal<br><small class="text-default">(Head of College)</small></td>
+                                                               <td>
+                                                                   <?php
+                                                                   if($result->principal_status == 0):
+                                                                       echo ' <small class="badge text-secondary" >Pending</small>';
+                                                                   elseif ($result->principal_status == 1):
+                                                                       echo ' <small class="badge text-success" >Approved</small>';
+                                                                   elseif ($result->principal_status == 2):
+                                                                       echo ' <small class="badge text-danger" >Rejected</small>';
+                                                                   endif;
+                                                                   ?>
+                                                               </td>
+                                                               <td class="text-muted text-center">
+                                                                   <small>
+                                                                       <?php if($result->principal_status != 0){ echo date('d M, Y H:ia', strtotime($result->principal_action_date)); } else{ echo '--'; } ?>
+                                                                   </small>
+                                                               </td>
+                                                               <td><small class="text-justify"> <?php if($result->principal_status != 0){ echo $result->principal_remark; } ?></small></td>
+                                                           </tr>
 
-								</div>
-							</div>
+                                                            <!--  DVC -->
+                                                           <tr>
+                                                               <td class="text-center">DVC<br><small class="text-default">(Depute Vice Chancellor)</small></td>
+                                                               <td>
+                                                                   <?php
+                                                                   if($result->dvc_status == 0):
+                                                                       echo ' <small class="badge text-secondary" >Pending</small>';
+                                                                   elseif ($result->dvc_status == 1):
+                                                                       echo ' <small class="badge text-success" >Approved</small>';
+                                                                   elseif ($result->dvc_status == 2):
+                                                                       echo ' <small class="badge text-danger" >Rejected</small>';
+                                                                   endif;
+                                                                   ?>
+                                                               </td>
+                                                               <td class="text-muted text-center">
+                                                                   <small>
+                                                                       <?php if($result->dvc_status != 0){ echo date('d M, Y H:ia', strtotime($result->dvc_action_date)); } else{ echo '--'; } ?>
+                                                                   </small>
+                                                               </td>
+                                                               <td><small class="text-justify"> <?php if($result->dvc_status != 0){ echo date('d J, Y', strtotime($result->dvc_remark)); } ?></small></td>
+                                                           </tr>
 
-							<div class="col-md-4">
-								<div class="form-group">
-									<label style="font-size:16px;"><b>Leave Status From HOD</b></label>
-									<?php $stats=$result->Status;?>
-									<?php
-									if ($stats==1): ?>
-									  <input type="text" style="color: green;" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo "Approved"; ?>">
-									<?php
-									 elseif ($stats==2): ?>
-									  <input type="text" style="color: red; font-size: 16px;" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo "Rejected"; ?>">
-									  <?php
-									else: ?>
-									  <input type="text" style="color: blue;" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo "Pending"; ?>">
-									<?php endif ?>
-								</div>
-							</div>
 
-							<div class="col-md-4">
-								<div class="form-group">
-									<label style="font-size:16px;"><b>Registra/Registry Status</b></label>
-									<?php $stats=$result->admin_status;?>
-									<?php
-									if ($stats==1): ?>
-									  <input type="text" style="color: green;" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo "Approved"; ?>">
-									<?php
-									 elseif ($stats==2): ?>
-									  <input type="text" style="color: red; font-size: 16px;" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo "Rejected"; ?>">
-									  <?php
-									else: ?>
-									  <input type="text" style="color: blue;" class="selectpicker form-control" data-style="btn-outline-primary" readonly value="<?php echo "Pending"; ?>">
-									<?php endif ?>
-								</div>
-							</div>
+                                                       </tbody>
 
-						</div>
 
-						<?php $cnt++;} } }?>
+                                                   </table>
+                                                </div>
+                                            </div>
+
+                                        <?php
+                                    endforeach;
+                                endif;
+						endif; ?>
 					</form>
 				</div>
 
