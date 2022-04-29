@@ -34,7 +34,7 @@
 <body>
 	<div class="pre-loader">
 		<div class="pre-loader-box">
-			<div class="loader-logo"><img src="../vendors/images/deskapp-logo-svg.png" alt=""></div>
+			<div class="loader-logo"><img src="../vendors/images/success.png" alt=""><h4>Leave management System</h4></div>
 			<div class='loader-progress' id="progress_div">
 				<div class='bar' id='bar1'></div>
 			</div>
@@ -245,6 +245,13 @@
                                                    </table>
                                                 </div>
                                             </div>
+
+
+                                            <div class="col-md-3">
+                                                <button class="btn btn-sm btn-block btn-success">print report</button>
+                                            </div>
+
+                                            
 
                                         <?php
                                     endforeach;

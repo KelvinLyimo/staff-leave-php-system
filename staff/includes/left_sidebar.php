@@ -1,8 +1,8 @@
 <div class="left-side-bar">
 		<div class="brand-logo">
 			<a href="admin_dashboard.php">
-				<img src="../vendors/images/deskapp-logo-svg.png" alt="" class="dark-logo">
-				<img src="../vendors/images/deskapp-logo-white-svg.png" alt="" class="light-logo">
+				<img src="../vendors/images/success.png" alt="" class="dark-logo">
+				<img src="../vendors/images/success.png" alt="" class="light-logo">
 			</a>
 			<div class="close-sidebar" data-toggle="left-sidebar-close">
 				<i class="ion-close-round"></i>
@@ -31,18 +31,15 @@
 						<div class="dropdown-divider"></div>
 					</li>
 					<li>
-						<div class="sidebar-small-cap">Extra</div>
+						<div class="sidebar-small-cap"></div>
 					</li>
 					<li>
-						<a href="https://aci.edu.gh/" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-edit-2"></span><span class="mtext">Visit Us</span>
+						<a href="" class="">
+							<span class=""></span><span class="mtext"></span>
 						</a>
 					</li>
 					<li>
-						<a href="https://aci.edu.gh/faculty" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-paper-plane1"></span>
-							<span class="mtext">Faculty </span>
-						</a>
+						
 					</li>
 				</ul>
 			</div>

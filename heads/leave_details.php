@@ -84,7 +84,7 @@ if(isset($_POST['tackAction']))
 <body>
 <div class="pre-loader">
     <div class="pre-loader-box">
-        <div class="loader-logo"><img src="../vendors/images/deskapp-logo-svg.png" alt=""></div>
+        <div class="loader-logo"><img src="../vendors/images/success.png" alt=""><h4>Leave management System</h4></div>
         <div class='loader-progress' id="progress_div">
             <div class='bar' id='bar1'></div>
         </div>
@@ -299,6 +299,11 @@ if(isset($_POST['tackAction']))
 
 
                                         </table>
+                                        <div class="report" center-align>
+                                    <form action="">
+                                    <input type="submit" class="btn btn-primary" name="tackAction" value="Submit">
+                                    </form>
+                                    </div>
                                     </div>
                                 </div>
                                 <?php if( $modelMsql['IsRead'] == $roleData['isRead'] AND ($modelMsql['hod_status'] == 0 OR $modelMsql['dvc_status'] == 0) ): ?>

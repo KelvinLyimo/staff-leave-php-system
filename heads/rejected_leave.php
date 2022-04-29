@@ -3,7 +3,7 @@
 <body>
 <div class="pre-loader">
     <div class="pre-loader-box">
-        <div class="loader-logo"><img src="../vendors/images/deskapp-logo-svg.png" alt=""></div>
+        <div class="loader-logo"><img src="../vendors/images/success.png" alt=""><h4>Leave management System</h4></div>
         <div class='loader-progress' id="progress_div">
             <div class='bar' id='bar1'></div>
         </div>
@@ -61,7 +61,7 @@
                     <tbody>
                     <?php
                     $status = 2;
-                    $sql = "SELECT tblleaves.id as lid,tblemployees.*,tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where tblleaves.".$roleData['status']."=:status and tblleaves.IsRead='".$roleData['isRead']."' order by lid desc limit 15";
+                    $sql = "SELECT tblleaves.id as lid,tblemployees.*,tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where tblleaves.".$roleData['status']."=:status and (tblleaves.IsRead='".$roleData['isRead']."' OR tblleaves.IsRead >= '2') order by lid desc limit 15";
                     $query = $dbh -> prepare($sql);
                     $query->bindParam(':status',$status,PDO::PARAM_STR);
                     $query->execute();

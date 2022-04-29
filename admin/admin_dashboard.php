@@ -3,7 +3,7 @@
 <body>
 	<div class="pre-loader">
 		<div class="pre-loader-box">
-			<div class="loader-logo"><img src="../vendors/images/deskapp-logo-svg.png" alt=""></div>
+			<div class="loader-logo"><img src="../vendors/images/success.png" alt=""><h4>Leave Management System</h4></div>
 			<div class='loader-progress' id="progress_div">
 				<div class='bar' id='bar1'></div>
 			</div>
@@ -38,7 +38,7 @@
 						<h4 class="font-20 weight-500 mb-10 text-capitalize">
 							Welcome back <div class="weight-600 font-30 text-blue"><?php echo $row['FirstName']. " " .$row['LastName']; ?>,</div>
 						</h4>
-						<p class="font-18 max-width-600">you are in an institution established to serve the wider Christian community in Ghana and Africa.</p>
+						<p class="font-18 max-width-600">Welcome in Leave management System</p>
 					</div>
 				</div>
 			</div>
@@ -242,7 +242,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <?php $sql = "SELECT tblleaves.id as lid,tblemployees.*, tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where tblleaves.IsRead='".$roleData['isRead']."' order by lid desc limit 15";
+                            <?php $sql = "SELECT tblleaves.id as lid,tblemployees.*, tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where (tblleaves.IsRead='".$roleData['isRead']."' OR tblleaves.IsRead >= '2') order by lid desc limit 15";
                             $query = $dbh -> prepare($sql);
                             $query->execute();
                             $results=$query->fetchAll(PDO::FETCH_OBJ);
