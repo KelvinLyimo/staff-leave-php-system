@@ -317,7 +317,7 @@ if(isset($_POST['tackAction']))
                                             </div>
                                         </div>
                                     </div>
-                                    <form name="adminaction" method="post" action="<?= $_SERVER['PHP_SELF'] ?>">
+                                    <form name="adminaction" method="post" action="">
                                         <div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">

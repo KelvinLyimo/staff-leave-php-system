@@ -4,7 +4,7 @@ include('includes/header.php');
 include('../includes/session.php');
 
 // code for action taken on leave
-if(isset($_POST['tackAction']))
+if(isset($_POST['taskAction']))
 {
     $leaveID = intval($_GET['leaveid']);
     $remark = $_POST['description'];
@@ -197,92 +197,82 @@ if(isset($_POST['tackAction']))
                                     <div class="col-sm-12 col-md-12 table-responsive">
                                         <table class="table table-bordered">
                                             <thead>
-                                            <tr>
-                                                <th>Administer</th>
-                                                <th>Status</th>
-                                                <th title="date of action">Date</th>
-                                                <th>Remark</th>
-                                            </tr>
+                                                <tr>
+                                                    <th>Administer</th>
+                                                    <th>Status</th>
+                                                    <th title="date of action">Date</th>
+                                                    <th>Remark</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            <!--  HOD -->
-                                            <tr>
-                                                <td class="text-center">HOD<br><small class="text-default">(Head of Department)</small></td>
-                                                <td>
-                                                    <?php
-                                                    if($result->hod_status == 0):
-                                                        echo ' <small class="badge text-secondary" >Pending</small>';
-                                                    elseif ($result->hod_status == 1):
-                                                        echo ' <small class="badge text-success" >Approved</small>';
-                                                    elseif ($result->hod_status == 2):
-                                                        echo ' <small class="badge text-danger" >Rejected</small>';
-                                                    endif;
-                                                    ?>
-                                                </td>
-                                                <td class="text-muted text-center">
-                                                    <small>
-                                                        <?php if($result->hod_status != 0){ echo date('d M, Y H:ia', strtotime($result->hod_action_date)); } else{ echo '--'; } ?>
-                                                    </small>
-                                                </td>
-                                                <td><small class="text-justify"> <?php if($result->hod_status != 0){ echo $result->hod_remark; } ?></small></td>
-                                            </tr>
+                                                <!--  HOD -->
+                                                <tr>
+                                                    <td class="text-center">HOD<br><small class="text-default">(Head of Department)</small></td>
+                                                    <td>
+                                                        <?php
+                                                        if($result->hod_status == 0):
+                                                            echo ' <small class="badge text-secondary" >Pending</small>';
+                                                        elseif ($result->hod_status == 1):
+                                                            echo ' <small class="badge text-success" >Approved</small>';
+                                                        elseif ($result->hod_status == 2):
+                                                            echo ' <small class="badge text-danger" >Rejected</small>';
+                                                        endif;
+                                                        ?>
+                                                    </td>
+                                                    <td class="text-muted text-center">
+                                                        <small>
+                                                            <?php if($result->hod_status != 0){ echo date('d M, Y H:ia', strtotime($result->hod_action_date)); } else{ echo '--'; } ?>
+                                                        </small>
+                                                    </td>
+                                                    <td><small class="text-justify"> <?php if($result->hod_status != 0){ echo $result->hod_remark; } ?></small></td>
+                                                </tr>
 
-                                            <!--  Principal -->
-                                            <tr>
-                                                <td class="text-center">Principal<br><small class="text-default">(Head of College)</small></td>
-                                                <td>
-                                                    <?php
-                                                    if($result->principal_status == 0):
-                                                        echo ' <small class="badge text-secondary" >Pending</small>';
-                                                    elseif ($result->principal_status == 1):
-                                                        echo ' <small class="badge text-success" >Approved</small>';
-                                                    elseif ($result->principal_status == 2):
-                                                        echo ' <small class="badge text-danger" >Rejected</small>';
-                                                    endif;
-                                                    ?>
-                                                </td>
-                                                <td class="text-muted text-center">
-                                                    <small>
-                                                        <?php if($result->principal_status != 0){ echo date('d M, Y H:ia', strtotime($result->principal_action_date)); } else{ echo '--'; } ?>
-                                                    </small>
-                                                </td>
-                                                <td><small class="text-justify"> <?php if($result->principal_status != 0){ echo $result->principal_remark; } ?></small></td>
-                                            </tr>
+                                                <!--  Principal -->
+                                                <tr>
+                                                    <td class="text-center">Principal<br><small class="text-default">(Head of College)</small></td>
+                                                    <td>
+                                                        <?php
+                                                        if($result->principal_status == 0):
+                                                            echo ' <small class="badge text-secondary" >Pending</small>';
+                                                        elseif ($result->principal_status == 1):
+                                                            echo ' <small class="badge text-success" >Approved</small>';
+                                                        elseif ($result->principal_status == 2):
+                                                            echo ' <small class="badge text-danger" >Rejected</small>';
+                                                        endif;
+                                                        ?>
+                                                    </td>
+                                                    <td class="text-muted text-center">
+                                                        <small>
+                                                            <?php if($result->principal_status != 0){ echo date('d M, Y H:ia', strtotime($result->principal_action_date)); } else{ echo '--'; } ?>
+                                                        </small>
+                                                    </td>
+                                                    <td><small class="text-justify"> <?php if($result->principal_status != 0){ echo $result->principal_remark; } ?></small></td>
+                                                </tr>
 
-                                            <!--  DVC -->
-                                            <tr>
-                                                <td class="text-center">DVC<br><small class="text-default">(Depute Vice Chancellor)</small></td>
-                                                <td>
-                                                    <?php
-                                                    if($result->dvc_status == 0):
-                                                        echo ' <small class="badge text-secondary" >Pending</small>';
-                                                    elseif ($result->dvc_status == 1):
-                                                        echo ' <small class="badge text-success" >Approved</small>';
-                                                    elseif ($result->dvc_status == 2):
-                                                        echo ' <small class="badge text-danger" >Rejected</small>';
-                                                    endif;
-                                                    ?>
-                                                </td>
-                                                <td class="text-muted text-center">
-                                                    <small>
-                                                        <?php if($result->dvc_status != 0){ echo date('d M, Y H:ia', strtotime($result->dvc_action_date)); } else{ echo '--'; } ?>
-                                                    </small>
-                                                </td>
-                                                <td><small class="text-justify"> <?php if($result->dvc_status != 0){ echo $result->dvc_remark; } ?></small></td>
-                                            </tr>
-
-
+                                                <!--  DVC -->
+                                                <tr>
+                                                    <td class="text-center">DVC<br><small class="text-default">(Depute Vice Chancellor)</small></td>
+                                                    <td>
+                                                        <?php
+                                                        if($result->dvc_status == 0):
+                                                            echo ' <small class="badge text-secondary" >Pending</small>';
+                                                        elseif ($result->dvc_status == 1):
+                                                            echo ' <small class="badge text-success" >Approved</small>';
+                                                        elseif ($result->dvc_status == 2):
+                                                            echo ' <small class="badge text-danger" >Rejected</small>';
+                                                        endif;
+                                                        ?>
+                                                    </td>
+                                                    <td class="text-muted text-center">
+                                                        <small>
+                                                            <?php if($result->dvc_status != 0){ echo date('d M, Y H:ia', strtotime($result->dvc_action_date)); } else{ echo '--'; } ?>
+                                                        </small>
+                                                    </td>
+                                                    <td><small class="text-justify"> <?php if($result->dvc_status != 0){ echo $result->dvc_remark; } ?></small></td>
+                                                </tr>
                                             </tbody>
-
-
                                         </table>
-                                        <div class="report" center-align>
-                                    <form action="">
-                                    <input type="submit" class="btn btn-primary" name="tackAction" value="Submit">
-                                    </form>
                                     </div>
-                                    </div>
-                                    
                                 </div>
                                 <?php if( $modelMsql['IsRead'] == $roleData['isRead'] AND ($modelMsql['principal_status'] == 0) ): ?>
                                     <div class="row">
@@ -295,7 +285,7 @@ if(isset($_POST['tackAction']))
                                             </div>
                                         </div>
                                     </div>
-                                    <form name="adminaction" method="post" action="<?= $_SERVER['PHP_SELF'] ?>">
+                                    <form name="adminaction" method="post" action="">
                                         <div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
@@ -313,7 +303,7 @@ if(isset($_POST['tackAction']))
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer justify-content-center">
-                                                        <input type="submit" class="btn btn-primary" name="tackAction" value="Submit">
+                                                        <input type="submit" class="btn btn-primary" name="taskAction" value="Submit">
                                                     </div>
                                                 </div>
                                             </div>
