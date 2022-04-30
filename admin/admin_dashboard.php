@@ -242,7 +242,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <?php $sql = "SELECT tblleaves.id as lid,tblemployees.*, tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where (tblleaves.IsRead='".$roleData['isRead']."' OR tblleaves.IsRead >= '2') order by lid desc limit 15";
+                            <?php $sql = "SELECT tblleaves.id as lid,tblemployees.*, tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where (tblleaves.IsRead='".$roleData['isRead']."' OR tblleaves.IsRead >= 2) order by lid desc limit 15";
                             $query = $dbh -> prepare($sql);
                             $query->execute();
                             $results=$query->fetchAll(PDO::FETCH_OBJ);

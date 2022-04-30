@@ -41,10 +41,13 @@
         </div>
 
         <div class="card-box mb-30">
-            <div class="pd-20">
+            <div class=" col-md-12 pd-20">
                 <h2 class="text-blue h4">REJECTED LEAVES</h2>
             </div>
-            <div class="pb-20">
+            <div class="col-md-12">
+                <?php include_once("../includes/message.php"); ?>
+            </div>
+            <div class=" col-md-12 pb-20">
                 <table class="data-table table stripe hover nowrap">
                     <thead>
                     <tr>
@@ -61,7 +64,7 @@
                     <tbody>
                     <?php
                     $status = 2;
-                    $sql = "SELECT tblleaves.id as lid,tblemployees.*,tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where tblleaves.".$roleData['status']."=:status and (tblleaves.IsRead='".$roleData['isRead']."' OR tblleaves.IsRead >= '2') order by lid desc limit 15";
+                    $sql = "SELECT tblleaves.id as lid,tblemployees.*,tblleaves.* from tblleaves join tblemployees on tblleaves.empid=tblemployees.emp_id where tblleaves.".$roleData['status']."=:status and (tblleaves.IsRead='".$roleData['isRead']."' OR tblleaves.IsRead >= 2) order by lid desc limit 15";
                     $query = $dbh -> prepare($sql);
                     $query->bindParam(':status',$status,PDO::PARAM_STR);
                     $query->execute();

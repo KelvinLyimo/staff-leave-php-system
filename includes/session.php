@@ -37,5 +37,17 @@ $session_depart = $_SESSION['arole'];
         );
     }
 
+    //function will restrict hod to view and react to other department leave request
+    function hodFunc($department){
+        if(isset($_SESSION['hod'])){
+            if(isset($_SESSION['arole']) AND $_SESSION['arole'] == $department)
+                return true;
+            else
+                return false;
+        }else{
+            return true;
+        }
+    }
+
 
 ?>

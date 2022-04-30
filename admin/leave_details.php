@@ -106,7 +106,6 @@ if(isset($_POST['taskAction']))
                         <p class="mb-20"></p>
                     </div>
                 </div>
-                <form method="post" action="">
                     <?php
                     if(!isset($_GET['leaveid']) && empty($_GET['leaveid'])):
                         header('Location: index.php');
@@ -311,11 +310,19 @@ if(isset($_POST['taskAction']))
                                     </form>
                                 <?php endif; ?>
 
+                                <?php if($modelMsql['IsRead'] >= 2): ?>
+                                    <div class="col-md-3">
+                                        <form method="post" action="../downloads/leave_ticket.php">
+                                            <input type="hidden" name="leaveID" value="<?= $lid; ?>">
+                                            <button name="print_leave_ticket" type="submit" class="btn btn-sm btn-block btn-success">print report</button>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
+
                             <?php
                             endforeach;
                         endif;
                     endif; ?>
-                </form>
             </div>
 
         </div>

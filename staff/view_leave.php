@@ -79,7 +79,10 @@
 							<p class="mb-20"></p>
 						</div>
 					</div>
-					<form method="post" action="">
+                    <div class="col-md-12">
+                        <?php include('../includes/message.php'); ?>
+                    </div>
+
 						<?php 
 						if(!isset($_GET['edit']) && empty($_GET['edit'])):
 							header('Location: index.php');
@@ -246,18 +249,21 @@
                                                 </div>
                                             </div>
 
+                                            <?php if($result->IsRead >= 2): ?>
+                                                <div class="col-md-3">
+                                                    <form method="post" action="../downloads/leave_ticket.php">
+                                                        <input type="hidden" name="leaveID" value="<?= $lid; ?>">
+                                                        <button name="print_leave_ticket" type="submit" class="btn btn-sm btn-block btn-success">print report</button>
+                                                    </form>
+                                                </div>
+                                            <?php endif; ?>
 
-                                            <div class="col-md-3">
-                                                <button class="btn btn-sm btn-block btn-success">print report</button>
-                                            </div>
 
-                                            
 
                                         <?php
                                     endforeach;
                                 endif;
 						endif; ?>
-					</form>
 				</div>
 
 			</div>

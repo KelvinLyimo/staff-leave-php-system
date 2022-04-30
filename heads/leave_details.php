@@ -129,7 +129,6 @@ if(isset($_POST['tackAction']))
                         <p class="mb-20"></p>
                     </div>
                 </div>
-                <form method="post" action="">
                     <?php
                     if(!isset($_GET['leaveid']) && empty($_GET['leaveid'])):
                         header('Location: index.php');
@@ -299,14 +298,11 @@ if(isset($_POST['tackAction']))
 
 
                                         </table>
-                                        <div class="report" center-align>
-                                    <form action="">
-                                    <input type="submit" class="btn btn-primary" name="tackAction" value="Submit">
-                                    </form>
-                                    </div>
+
                                     </div>
                                 </div>
-                                <?php if( $modelMsql['IsRead'] == $roleData['isRead'] AND ($modelMsql['hod_status'] == 0 OR $modelMsql['dvc_status'] == 0) ): ?>
+
+                                <?php if( $modelMsql['IsRead'] == $roleData['isRead'] AND ($modelMsql['principal_status'] == 0)  AND hodFunc($modelMsql['Department']) ): ?>
                                     <div class="row">
                                         <div class="col-md-8"></div>
                                         <div class="col-md-3">
@@ -345,11 +341,18 @@ if(isset($_POST['tackAction']))
                                     </form>
                                 <?php endif; ?>
 
+                                <?php if($modelMsql['IsRead'] >= 2): ?>
+                                    <div class="col-md-3">
+                                        <form method="post" action="../downloads/leave_ticket.php">
+                                            <input type="hidden" name="leaveID" value="<?= $lid; ?>">
+                                            <button name="print_leave_ticket" type="submit" class="btn btn-sm btn-block btn-success">print report</button>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
                             <?php
                             endforeach;
                         endif;
                     endif; ?>
-                </form>
             </div>
 
         </div>
