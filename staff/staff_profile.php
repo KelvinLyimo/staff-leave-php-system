@@ -180,15 +180,15 @@ if (isset($_POST["update_image"])) {
 																<p><?php echo $row['Description']; ?></p>
 
 																<div class="task-time">
-																	<?php $stats=$row['Status'];
-								                                       if($stats==1){
-								                                        ?>
-								                                           <span style="color: green">Approved</span>
-								                                            <?php } if($stats==2)  { ?>
-								                                           <span style="color: red">Not Approved</span>
-								                                            <?php } if($stats==0)  { ?>
-									                                       <span style="color: blue">Pending</span>
-									                                <?php } ?>
+																	<?php
+																		 if($row['dvc_status'] == 0):
+																			echo ' <small class="badge text-secondary" >Pending</small>';
+																		elseif ($row['dvc_status'] == 1):
+																			echo ' <small class="badge text-success" >Approved</small>';
+																		elseif ($row['dvc_status'] == 2):
+																			echo ' <small class="badge text-danger" >Rejected</small>';
+																		endif;
+																	?>
 																</div>
 
 															</li>

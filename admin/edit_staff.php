@@ -111,7 +111,7 @@
 									<div class="col-md-4 col-sm-12">
 										<div class="form-group">
 											<label>Password :</label>
-											<input name="password" type="password" placeholder="**********" class="form-control" readonly required="true" autocomplete="off" value="<?php echo $row['Password']; ?>">
+											<input name="password" type="password" placeholder="**********" class="form-control" readonly required="true" autocomplete="off" value="">
 										</div>
 									</div>
 									<div class="col-md-4 col-sm-12">
@@ -149,7 +149,7 @@
 											<label>Department :</label>
 											<select name="department" class="custom-select form-control" required="true" autocomplete="off">
 												<?php
-													$query_staff = mysqli_query($conn,"select * from tblemployees join  tbldepartments where emp_id = '$get_id'")or die(mysqli_error());
+													$query_staff = mysqli_query($conn,"select * from tbldepartments")or die(mysqli_error());
 													$row_staff = mysqli_fetch_array($query_staff);
 													
 												 ?>
